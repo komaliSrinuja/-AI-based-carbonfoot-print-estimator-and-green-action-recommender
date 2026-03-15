@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register | Carbon Tracker</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            margin:0;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#e6f4ea,#b7e1c1,#8bcf9b);
+        }
+
+        .register-card{
+            width:400px;
+            padding:42px 44px;
+            border-radius:24px;
+            background:rgba(255,255,255,0.92);
+            box-shadow:0 30px 60px rgba(0,0,0,.18);
+            animation:fadeUp .8s ease;
+        }
+
+        @keyframes fadeUp{
+            from{opacity:0;transform:translateY(30px)}
+            to{opacity:1;transform:translateY(0)}
+        }
+
+        h2{
+            text-align:center;
+            color:#1b5e20;
+            font-weight:600;
+            margin-bottom:8px;
+        }
+
+        p{
+            text-align:center;
+            font-size:14px;
+            color:#4e6f57;
+            margin-bottom:28px;
+        }
+
+        input{
+            width:100%;
+            padding:14px;
+            border-radius:14px;
+            border:1px solid #c8e6c9;
+            margin-bottom:16px;
+            background:#f9fff9;
+            font-size:14px;
+            transition:.3s;
+        }
+
+        input:focus{
+            outline:none;
+            border-color:#66bb6a;
+            box-shadow:0 0 0 3px rgba(102,187,106,.25);
+        }
+
+        button{
+            width:100%;
+            padding:15px;
+            border:none;
+            border-radius:18px;
+            background:linear-gradient(135deg,#2e7d32,#81c784);
+            color:#fff;
+            font-size:16px;
+            cursor:pointer;
+            transition:.3s;
+        }
+
+        button:hover{
+            transform:translateY(-2px);
+            box-shadow:0 15px 30px rgba(0,0,0,.25);
+        }
+
+        .link{
+            margin-top:22px;
+            text-align:center;
+            font-size:14px;
+        }
+
+        .link a{
+            color:#2e7d32;
+            font-weight:500;
+            text-decoration:none;
+        }
+
+        .link a:hover{
+            text-decoration:underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="register-card">
+
+    <h2>🌱 Create Account</h2>
+    <p>Join us in building a greener future</p>
+
+    <form method="POST" action="{{ url_for('register') }}">
+        <input type="text" name="username" placeholder="Choose Username" required>
+        <input type="password" name="password" placeholder="Create Password" required>
+        <button type="submit">Register</button>
+    </form>
+
+    <div class="link">
+        Already have an account?
+        <a href="{{ url_for('login') }}">Login</a>
+    </div>
+
+</div>
+
+</body>
+</html>
