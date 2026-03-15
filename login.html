@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login | Carbon Tracker</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            margin:0;
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#e6f4ea,#b7e1c1,#8bcf9b);
+            overflow:hidden; /* leaves kosam */
+        }
+
+        /* 🌿 OAK LEAVES */
+        .leaf{
+            position:fixed;
+            top:-40px;
+            width:16px;
+            height:22px;
+            background:#4caf50; /* medium green */
+            border-radius:50% 50% 40% 40%;
+            transform:rotate(20deg);
+            opacity:.85;
+            pointer-events:none;
+            z-index:1;
+            animation:fall linear infinite, sway ease-in-out infinite;
+        }
+
+        /* Oak leaf shape effect */
+        .leaf::before,
+        .leaf::after{
+            content:'';
+            position:absolute;
+            width:100%;
+            height:100%;
+            background:inherit;
+            border-radius:50%;
+        }
+
+        .leaf::before{
+            left:-6px;
+            top:4px;
+        }
+
+        .leaf::after{
+            right:-6px;
+            top:4px;
+        }
+
+        @keyframes fall{
+            0%{transform:translateY(0) rotate(0deg)}
+            100%{transform:translateY(110vh) rotate(360deg)}
+        }
+
+        @keyframes sway{
+            0%{margin-left:0}
+            50%{margin-left:25px}
+            100%{margin-left:0}
+        }
+
+        .leaf:nth-child(1){left:10%;animation-duration:11s,3s}
+        .leaf:nth-child(2){left:25%;width:14px;height:20px;animation-duration:13s,4s}
+        .leaf:nth-child(3){left:45%;width:18px;height:24px;animation-duration:10s,2.5s}
+        .leaf:nth-child(4){left:65%;width:15px;height:22px;animation-duration:12s,3.5s}
+        .leaf:nth-child(5){left:85%;width:17px;height:23px;animation-duration:14s,4s}
+
+        /* LOGIN CARD */
+        .login-card{
+            width:380px;
+            padding:40px 42px;
+            border-radius:24px;
+            background:rgba(255,255,255,0.9);
+            box-shadow:0 30px 60px rgba(0,0,0,.18);
+            animation:fadeUp .8s ease;
+            position:relative;
+            z-index:2;
+        }
+
+        @keyframes fadeUp{
+            from{opacity:0;transform:translateY(30px)}
+            to{opacity:1;transform:translateY(0)}
+        }
+
+        h2{
+            text-align:center;
+            color:#1b5e20;
+            font-weight:600;
+            margin-bottom:8px;
+        }
+
+        p{
+            text-align:center;
+            font-size:14px;
+            color:#4e6f57;
+            margin-bottom:28px;
+        }
+
+        input{
+            width:100%;
+            padding:14px;
+            border-radius:14px;
+            border:1px solid #c8e6c9;
+            margin-bottom:16px;
+            background:#f9fff9;
+            font-size:14px;
+            transition:.3s;
+        }
+
+        input:focus{
+            outline:none;
+            border-color:#66bb6a;
+            box-shadow:0 0 0 3px rgba(102,187,106,.25);
+        }
+
+        button{
+            width:100%;
+            padding:15px;
+            border:none;
+            border-radius:18px;
+            background:linear-gradient(135deg,#2e7d32,#81c784);
+            color:#fff;
+            font-size:16px;
+            cursor:pointer;
+            transition:.3s;
+        }
+
+        button:hover{
+            transform:translateY(-2px);
+            box-shadow:0 15px 30px rgba(0,0,0,.25);
+        }
+
+        .link{
+            margin-top:22px;
+            text-align:center;
+            font-size:14px;
+        }
+
+        .link a{
+            color:#2e7d32;
+            font-weight:500;
+            text-decoration:none;
+        }
+
+        .link a:hover{
+            text-decoration:underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- 🌿 Falling oak leaves -->
+<div class="leaf"></div>
+<div class="leaf"></div>
+<div class="leaf"></div>
+<div class="leaf"></div>
+<div class="leaf"></div>
+
+<div class="login-card">
+
+    <h2>🌱 Welcome Back</h2>
+    <p>Track your impact. Protect the planet.</p>
+
+    <form method="POST" action="{{ url_for('login') }}">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <div class="link">
+        New here?
+        <a href="{{ url_for('register') }}">Create account</a>
+    </div>
+
+</div>
+
+</body>
+</html>
