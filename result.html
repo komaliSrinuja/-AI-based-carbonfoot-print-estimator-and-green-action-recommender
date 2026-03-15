@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Emission Summary</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#f4f6f8,#e9edf1);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.wrapper{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:35px;
+    width:1100px;
+}
+
+.card{
+    background:rgba(255,255,255,0.9);
+    border-radius:24px;
+    padding:40px;
+    box-shadow:0 30px 70px rgba(0,0,0,.12);
+}
+
+h1{
+    text-align:center;
+    color:#1b5e20;
+    margin-bottom:25px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.box{
+    background:#f7f9fb;
+    border-radius:14px;
+    padding:16px;
+    font-size:14px;
+    color:#37474f;
+}
+
+.total{
+    grid-column:1/3;
+    background:linear-gradient(135deg,#e3f2fd,#f1f8ff);
+    font-weight:600;
+    color:#0d47a1;
+}
+
+.actions{
+    display:flex;
+    gap:16px;
+    margin-top:30px;
+}
+
+.actions a{
+    flex:1;
+    text-align:center;
+    padding:14px;
+    border-radius:14px;
+    text-decoration:none;
+    font-size:15px;
+}
+
+.dashboard{
+    background:#111;
+    color:white;
+}
+
+.new{
+    background:#e0e0e0;
+    color:#111;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+    <!-- LEFT : SUMMARY -->
+    <div class="card">
+        <h1>🌍 Emission Summary</h1>
+
+        <div class="grid">
+            <div class="box">⚡ Energy: {{ energy }} kg CO₂</div>
+            <div class="box">🚗 Transport: {{ transport }} kg CO₂</div>
+            <div class="box">🍽 Diet: {{ diet }} kg CO₂</div>
+            <div class="box">🗑 Waste: {{ waste }} kg CO₂</div>
+            <div class="box">🚿 Water: {{ water }} kg CO₂</div>
+            <div class="box total">✅ Total: {{ total }} kg CO₂</div>
+        </div>
+
+        <div class="actions">
+            <a href="{{ url_for('dashboard') }}" class="dashboard">📊 Dashboard</a>
+            <a href="{{ url_for('input_page') }}" class="new">➕ New Entry</a>
+        </div>
+    </div>
+
+    <!-- RIGHT : VISUAL -->
+    <div class="card"
+         data-energy="{{ energy }}"
+         data-transport="{{ transport }}"
+         data-diet="{{ diet }}"
+         data-waste="{{ waste }}"
+         data-water="{{ water }}">
+
+        <h1>📊 Visual Breakdown</h1>
+        <canvas id="pieChart"></canvas>
+    </div>
+
+</div>
+
+<script>
+const d=document.querySelector('[data-energy]');
+const data=[
+    +d.dataset.energy,
+    +d.dataset.transport,
+    +d.dataset.diet,
+    +d.dataset.waste,
+    +d.dataset.water
+];
+
+new Chart(document.getElementById('pieChart'),{
+    type:'doughnut',
+    data:{
+        labels:['Energy','Transport','Diet','Waste','Water'],
+        datasets:[{
+            data:data,
+            backgroundColor:[
+                '#2e7d32',
+                '#66bb6a',
+                '#26a69a',
+                '#81c784',
+                '#aed581'
+            ],
+            borderWidth:0
+        }]
+    },
+    options:{
+        cutout:'60%',
+        plugins:{legend:{position:'bottom'}},
+        animation:{duration:1400}
+    }
+});
+</script>
+
+</body>
+</html>
