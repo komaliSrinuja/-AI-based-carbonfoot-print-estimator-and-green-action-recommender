@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Carbon Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{box-sizing:border-box;font-family:'Poppins',sans-serif}
+
+body{
+    margin:0;
+    background:linear-gradient(135deg,#e8f5e9,#c8e6c9);
+    display:flex;
+    height:100vh;
+}
+
+/* Sidebar */
+.sidebar{
+    width:260px;
+    background:#ffffffcc;
+    padding:25px;
+}
+
+.sidebar h2{text-align:center;color:#1b5e20}
+
+.nav-item{
+    padding:12px;
+    margin:10px 0;
+    background:#e8f5e9;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+.nav-item.active,.nav-item:hover{
+    background:#2e7d32;
+    color:white;
+}
+
+/* Main */
+.main{
+    flex:1;
+    padding:30px;
+    overflow:auto
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.hidden{display:none}
+
+.box{
+    background:#f1f8e9;
+    padding:15px;
+    border-radius:14px;
+    margin-top:15px;
+    white-space:pre-line;
+}
+
+select{
+    padding:8px 12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    margin-top:10px;
+}
+
+/* ===== AI Avatar ===== */
+
+.avatar-container{
+    display:flex;
+    justify-content:center;
+    margin-bottom:25px;
+}
+
+.avatar{
+    width:160px;
+    height:160px;
+    background:linear-gradient(145deg,#97cdf1,#9ca5e7);
+    border-radius:50%;
+    position:relative;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+    0%{ transform: translateY(0px); }
+    50%{ transform: translateY(-6px); }
+    100%{ transform: translateY(0px); }
+}
+
+.eyes{
+    position:absolute;
+    top:50px;
+    width:100%;
+    display:flex;
+    justify-content:space-around;
+}
+
+.eye{
+    width:25px;
+    height:25px;
+    background:white;
+    border-radius:50%;
+    position:relative;
+    overflow:hidden;
+    animation: blink 4s infinite;
+}
+
+.eye::after{
+    content:"";
+    width:10px;
+    height:10px;
+    background:black;
+    border-radius:50%;
+    position:absolute;
+    top:7px;
+    left:7px;
+}
+
+@keyframes blink{
+    0%,95%,100%{height:25px;}
+    97%{height:3px;}
+}
+
+.mouth{
+    position:absolute;
+    bottom:40px;
+    left:50%;
+    transform:translateX(-50%);
+    width:50px;
+    height:20px;
+    background:#95ccf0;
+    border-radius:0 0 50px 50px;
+    transition:0.1s ease;
+}
+
+.talking{
+    height:35px !important;
+    border-radius:0 0 30px 30px;
+}
+
+/* ===== Scope Cards ===== */
+
+.scope-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin-top:20px;
+}
+
+.scope-card{
+background:#f1f8e9;
+padding:20px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.scope-icon{
+font-size:40px;
+margin-bottom:10px;
+}
+
+.scope-desc{
+font-size:13px;
+color:#555;
+margin-bottom:10px;
+}
+
+.scope-value{
+font-weight:600;
+font-size:18px;
+color:#1b5e20;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>🌿 Dashboard</h2>
+    <div class="nav-item active" onclick="showSection('ai', this)">🤖 AI Assistant</div>
+    <div class="nav-item" onclick="loadTrends(this)">📈 Trends</div>
+    <div class="nav-item" onclick="loadBudget(this)">🎯 Carbon Budget</div>
+    <div class="nav-item" onclick="loadScope(this)">🏭 Scope Emissions</div>
+    <div class="nav-item" onclick="loadOffset(this)">🌱 Carbon Offset</div>
+</div>
+
+<div class="main">
+<h2>🌍 Total: {{ total }} kg CO₂</h2>
+
+<div class="card">
+
+<!-- AI SECTION -->
+
+<div id="ai">
+
+<h3>🤖 Eco AI Assistant</h3>
+
+<div class="avatar-container">
+    <div class="avatar">
+        <div class="eyes">
+            <div class="eye"></div>
+            <div class="eye"></div>
+        </div>
+        <div class="mouth" id="mouth"></div>
+    </div>
+</div>
+
+<h3>🌍 Select Language</h3>
+
+<select id="lang">
+<option value="en">English</option>
+<option value="te">Telugu</option>
+<option value="hi">Hindi</option>
+<option value="ta">Tamil</option>
+<option value="fr">French</option>
+<option value="de">German</option>
+<option value="es">Spanish</option>
+<option value="zh-cn">Chinese</option>
+<option value="ja">Japanese</option>
+<option value="ru">Russian</option>
+<option value="ar">Arabic</option>
+<option value="ko">Korean</option>
+<option value="it">Italian</option>
+<option value="pt">Portuguese</option>
+</select>
+
+<div id="aiSuggestionBox" class="box">
+Your AI eco explanation will appear here 🌱
+</div>
+
+</div>
+
+<!-- Trends -->
+
+<div id="trends" class="hidden">
+<h3>📈 Emission Trends</h3>
+<canvas id="trendChart"></canvas>
+</div>
+
+<!-- Budget -->
+
+<div id="budget" class="hidden">
+<h3>🎯 Carbon Budget</h3>
+<div id="budgetData"></div>
+</div>
+
+<!-- Scope Emissions -->
+
+<div id="scope" class="hidden">
+<h3>🏭 Scope Emissions</h3>
+
+<div class="scope-grid">
+
+<div class="scope-card">
+<div class="scope-icon">🚗</div>
+<h4>Scope 1</h4>
+<p class="scope-desc">
+Direct emissions from personal activities such as vehicle usage and fuel consumption.
+</p>
+<div class="scope-value" id="scope1Value"></div>
+</div>
+
+<div class="scope-card">
+<div class="scope-icon">⚡</div>
+<h4>Scope 2</h4>
+<p class="scope-desc">
+Indirect emissions from electricity and purchased energy used in homes.
+</p>
+<div class="scope-value" id="scope2Value"></div>
+</div>
+
+<div class="scope-card">
+<div class="scope-icon">🛒</div>
+<h4>Scope 3</h4>
+<p class="scope-desc">
+Indirect emissions from food, waste, water usage, and lifestyle consumption.
+</p>
+<div class="scope-value" id="scope3Value"></div>
+</div>
+
+</div>
+
+</div>
+
+<!-- Offset -->
+
+<div id="offset" class="hidden">
+<h3>🌱 Carbon Offset</h3>
+<div id="offsetData"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+
+let speakingInterval;
+
+function hideAll(){
+document.querySelectorAll('.card > div').forEach(d=>d.classList.add('hidden'));
+document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+}
+
+function showSection(id, el){
+hideAll();
+document.getElementById(id).classList.remove('hidden');
+el.classList.add('active');
+}
+
+/* AI */
+
+function loadAI(){
+let selectedLang = document.getElementById("lang").value;
+
+fetch("/dashboard/ai_suggestion?lang=" + selectedLang)
+.then(response => response.json())
+.then(data => {
+
+document.getElementById("aiSuggestionBox").innerText = data.text;
+
+window.speechSynthesis.cancel();
+
+let speech = new SpeechSynthesisUtterance(data.text);
+
+speech.lang="en-IN";
+
+let mouth = document.getElementById("mouth");
+
+speech.onstart=function(){
+mouth.classList.add("talking");
+speakingInterval=setInterval(function(){
+mouth.style.height=(20+Math.random()*20)+"px";
+},120);
+};
+
+speech.onend=function(){
+mouth.classList.remove("talking");
+mouth.style.height="20px";
+clearInterval(speakingInterval);
+};
+
+window.speechSynthesis.speak(speech);
+});
+}
+
+document.getElementById("lang").addEventListener("change", loadAI);
+
+window.onload=function(){
+loadAI();
+};
+
+/* Trends */
+
+function loadTrends(el){
+showSection('trends',el);
+
+fetch("/dashboard/trends_data")
+.then(r=>r.json())
+.then(d=>{
+new Chart(trendChart,{
+type:"line",
+data:{
+labels:d.daily.map(x=>x.date),
+datasets:[{
+label:"CO₂",
+data:d.daily.map(x=>x.total),
+fill:true,
+tension:0.4
+}]
+}
+});
+});
+}
+
+/* Budget */
+
+function loadBudget(el){
+showSection('budget',el);
+
+fetch("/dashboard/budget_data")
+.then(r=>r.json())
+.then(d=>{
+budgetData.innerHTML=
+`<div class="box">Budget: ${d.budget}</div>
+<div class="box">Used: ${d.used}</div>
+<div class="box">Remaining: ${d.remaining}</div>`;
+});
+}
+
+/* Scope */
+
+function loadScope(el){
+showSection('scope',el);
+
+fetch("/dashboard/scope_data")
+.then(r=>r.json())
+.then(d=>{
+
+document.getElementById("scope1Value").innerText =
+d.scope1 + " kg CO₂";
+
+document.getElementById("scope2Value").innerText =
+d.scope2 + " kg CO₂";
+
+document.getElementById("scope3Value").innerText =
+d.scope3 + " kg CO₂";
+
+});
+}
+
+/* Offset */
+
+function loadOffset(el){
+showSection('offset',el);
+
+fetch("/dashboard/offset_data")
+.then(r=>r.json())
+.then(d=>{
+offsetData.innerHTML=
+`<div class="box">Trees: ${d.trees}</div>
+<div class="box">Cost: ₹${d.cost}</div>
+<div class="box">NGOs: ${d.ngo_list.join(", ")}</div>`;
+});
+}
+
+</script>
+
+</body>
+</html>
