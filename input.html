@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Carbon Input | Carbon Tracker</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:linear-gradient(135deg,#e8f5e9,#c8e6c9);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:30px;
+}
+
+.container{
+    width:820px;
+    background:rgba(255,255,255,0.9);
+    border-radius:28px;
+    padding:42px 48px;
+    box-shadow:0 30px 60px rgba(0,0,0,.18);
+}
+
+h2{
+    text-align:center;
+    color:#1b5e20;
+    font-weight:600;
+}
+
+.subtitle{
+    text-align:center;
+    color:#4e6f57;
+    font-size:14px;
+    margin-bottom:30px;
+}
+
+.section{
+    margin-top:28px;
+}
+
+.section-title{
+    color:#2e7d32;
+    font-weight:500;
+    margin-bottom:12px;
+    border-left:5px solid #66bb6a;
+    padding-left:12px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.card{
+    background:#f9fff9;
+    border-radius:18px;
+    padding:18px;
+    border:1px solid #c8e6c9;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 25px rgba(0,0,0,.08);
+}
+
+label{
+    font-size:13px;
+    color:#2e7d32;
+    display:block;
+    margin-bottom:6px;
+}
+
+input,select{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #c8e6c9;
+    background:#ffffff;
+    outline:none;
+}
+
+input:focus,select:focus{
+    border-color:#4caf50;
+}
+
+.helper{
+    font-size:11px;
+    color:#6b8f77;
+    margin-top:4px;
+}
+
+button{
+    margin-top:34px;
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:20px;
+    background:linear-gradient(135deg,#2e7d32,#81c784);
+    color:white;
+    font-size:18px;
+    font-weight:500;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.02);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🌱 Carbon Footprint Calculator</h2>
+<p class="subtitle">Measure today. Improve tomorrow.</p>
+
+<form method="POST">
+
+<!-- ⏱ PERIOD -->
+<div class="section">
+    <div class="section-title">⏱ Period</div>
+    <select name="period" required>
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="monthly">Monthly</option>
+        <option value="yearly">Yearly</option>
+    </select>
+</div>
+
+<!-- 🚗 TRANSPORT -->
+<div class="section">
+    <div class="section-title">🚗 Transport</div>
+
+    <div class="grid">
+
+        <div class="card">
+            <label>🚗 Car Distance (km)</label>
+            <input type="number" step="0.1" min="0" max="500" name="car_km" placeholder="e.g. 15">
+            <div class="helper">Typical daily: 5–50 km</div>
+        </div>
+
+        <div class="card">
+            <label>🚌 Bus Distance (km)</label>
+            <input type="number" step="0.1" min="0" max="500" name="bus_km" placeholder="e.g. 25">
+            <div class="helper">Public transport commute</div>
+        </div>
+
+        <div class="card">
+            <label>🏍 Bike Distance (km)</label>
+            <input type="number" step="0.1" min="0" max="200" name="bike_km" placeholder="e.g. 8">
+            <div class="helper">Short-distance travel</div>
+        </div>
+
+        <div class="card">
+            <label>🚲 Bicycle Distance (km)</label>
+            <input type="number" step="0.1" min="0" max="100" name="bicycle_km" placeholder="e.g. 3">
+            <div class="helper">Zero-emission travel</div>
+        </div>
+
+    </div>
+</div>
+
+<!-- 🍽 FOOD -->
+<div class="section">
+    <div class="section-title">🍽 Food Intake</div>
+
+    <div class="grid">
+        <div class="card">
+            <label>Vegetarian (grams)</label>
+            <input type="number" min="0" max="3000" name="veg_qty">
+            <div class="helper">Vegetables, grains, fruits</div>
+        </div>
+
+        <div class="card">
+            <label>Non-Vegetarian (grams)</label>
+            <input type="number" min="0" max="3000" name="nonveg_qty">
+            <div class="helper">Meat, fish, eggs</div>
+        </div>
+    </div>
+</div>
+
+<!-- ⚡ UTILITIES -->
+<div class="section">
+    <div class="section-title">⚡ Utilities</div>
+
+    <div class="grid">
+        <div class="card">
+            <label>Electricity (kWh)</label>
+            <input type="number" step="0.1" min="0.5" max="50" name="electricity" required>
+            <div class="helper">Avg home: 3–10 kWh/day</div>
+        </div>
+
+        <div class="card">
+            <label>Waste (kg)</label>
+            <input type="number" step="0.1" min="0" max="5" name="waste">
+            <div class="helper">Household waste</div>
+        </div>
+
+        <div class="card">
+            <label>Water (litres)</label>
+            <input type="number" min="10" max="1000" name="water">
+            <div class="helper">Bathing, washing, cooking</div>
+        </div>
+    </div>
+</div>
+
+<button type="submit">✨ Calculate Emissions</button>
+
+</form>
+</div>
+
+</body>
+</html>
